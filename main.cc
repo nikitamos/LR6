@@ -40,10 +40,16 @@ int main() {
         solution.SolveProblem2();
         break;
       case 3:
+        solution.SolveProblem3();
+        break;
       default:
         std::cerr << LR6::kErrorFormat
                   << "Неверный ввод или таска не выполнена\n";
     }
+    solution.SetBufferSize(80);
+    std::cout << LR6::kGreen + LR6::kNormal << "Введите номер задачи\n";
+    LR6::PrettyInput();
+    solution.ReadLine(problem_no_str);
   } while (true);
 
   delete[] problem_no_str;

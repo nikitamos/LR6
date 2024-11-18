@@ -10,16 +10,18 @@ class Solution {
   void PrintDescription();
   char* ReadLine(char* reuse = nullptr) const;
   int GetTerminalWidth();
-  void SortNumberArray(char** numbers, size_t length);
+  void SortNumberArray(char** numbers, size_t &length);
+  [[deprecated]]
   void SetBufferSize(size_t new_size);
-  int GetCodepoint(const char* chr, int& index);
-
+  int GetCodepoint(const char* chr, int& index) const;
   bool GreaterOrEqual(char* first, char* second) const;
 
  private:
+  virtual int GetChar() const;
   enum Answer { kVowel, kConsonant, kNone };
   void SiftDown(char** numbers, size_t length, size_t index) const;
   Answer GetLetterType(int);
+  bool IsStringSymmetrical(char* str)const;
   size_t buf_size_ = 81;
   static const char* author;
 };

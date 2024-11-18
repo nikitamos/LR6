@@ -28,7 +28,7 @@ void LR6::Solution::SolveProblem2() {
   delete[] buf;
 }
 
-int LR6::Solution::GetCodepoint(const char* chr, int& index) {
+int LR6::Solution::GetCodepoint(const char* chr, int& index) const {
   int code = 0;
   int octets = 0;
   if ((0x80 & chr[index]) == 0x00) {

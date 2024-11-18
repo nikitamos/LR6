@@ -1,3 +1,0 @@
-[submodule "greeter"]
-	path = greeter
-	url = git@github.com:nikitamos/greeter.git

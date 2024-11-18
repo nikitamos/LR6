@@ -11,7 +11,7 @@ void LR6::Solution::SolveProblem1() {
   char* buf = this->ReadLine();
   std::cout << kReset;
 
-  int number_count = 0;
+  size_t number_count = 0;
   int length = std::strlen(buf);
   bool in_number = false;
   for (int i = 0; i < length; ++i) {
@@ -71,11 +71,11 @@ void LR6::Solution::SolveProblem1() {
   numbers = nullptr;
 }
 
-void LR6::Solution::SortNumberArray(char** numbers, size_t length) {
-  using SortFn = void(char**, size_t, Solution&);
+void LR6::Solution::SortNumberArray(char** numbers, size_t &length) {
+  using SortFn = size_t(char**, size_t, Solution&);
   void* stalin_sort_lib = dlopen("./libStalinSort.so", RTLD_NOW);
   SortFn* stalin_sort = NULL;
-  if (stalin_sort_lib) {
+  if (stalin_sort_lib != nullptr) {
     stalin_sort = (SortFn*)dlsym(stalin_sort_lib, "StalinSort");
   }
   if (stalin_sort_lib == NULL || stalin_sort == NULL) {
@@ -92,7 +92,7 @@ void LR6::Solution::SortNumberArray(char** numbers, size_t length) {
       --length;
     } while (length != 0);
   } else {
-    stalin_sort(numbers, length, *this);
+    length = stalin_sort(numbers, length, *this);
     dlclose(stalin_sort_lib);
   }
 }

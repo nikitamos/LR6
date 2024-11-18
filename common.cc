@@ -70,7 +70,7 @@ void LR6::Solution::PrintDescription() {
             << kYellow + kBold << "Задача 2: " << kReset << kCyan
             << "Определяет, каких букв больше во введенной строке: гласных или "
                "согласных\n"
-            << kRed + kBold << "Задача 3: " << kReset << kCyan
+            << kYellow + kBold << "Задача 3: " << kReset << kCyan
             << "Находит симметричные строки во введенном массиве строк\n"
             << kReset;
 }
@@ -84,3 +84,6 @@ int LR6::Solution::GetTerminalWidth() {
 }
 
 void LR6::Solution::SetBufferSize(size_t new_size) { buf_size_ = new_size; }
+int LR6::Solution::GetChar() const {
+  return getchar();
+}
