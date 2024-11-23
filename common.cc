@@ -33,7 +33,7 @@ std::ostream& LR6::operator<<(std::ostream& stream, LR6::Style style) {
 #endif
 }
 
-char* LR6::Solution::ReadLine(char* reuse) const {
+char* LR6::Solution::ReadLine(char* reuse) {
   if (reuse == nullptr) {
     try {
       reuse = new char[buf_size_ + 1];
@@ -44,7 +44,7 @@ char* LR6::Solution::ReadLine(char* reuse) const {
   }
 
   for (size_t i = 0; i < buf_size_; ++i) {
-    int c = getchar();
+    int c = GetChar();
     switch (c) {
       case EOF:
         std::cerr << kErrorFormat << "Поток ввода закрыт.\n";
@@ -84,6 +84,6 @@ int LR6::Solution::GetTerminalWidth() {
 }
 
 void LR6::Solution::SetBufferSize(size_t new_size) { buf_size_ = new_size; }
-int LR6::Solution::GetChar() const {
+int LR6::Solution::GetChar() {
   return getchar();
 }

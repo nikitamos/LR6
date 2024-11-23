@@ -37,6 +37,8 @@ void LR6::Solution::SolveProblem3() {
     delete[] strings[i];
     strings[i] = nullptr;
   }
+  delete[] strings;
+  strings = nullptr;
   delete[] buf;
   buf = nullptr;
 }

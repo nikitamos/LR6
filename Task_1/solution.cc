@@ -1,4 +1,3 @@
-#include <dlfcn.h>
 #include <solutions.h>
 
 #include <cctype>
@@ -72,16 +71,6 @@ void LR6::Solution::SolveProblem1() {
 }
 
 void LR6::Solution::SortNumberArray(char** numbers, size_t &length) {
-  using SortFn = size_t(char**, size_t, Solution&);
-  void* stalin_sort_lib = dlopen("./libStalinSort.so", RTLD_NOW);
-  SortFn* stalin_sort = NULL;
-  if (stalin_sort_lib != nullptr) {
-    stalin_sort = (SortFn*)dlsym(stalin_sort_lib, "StalinSort");
-  }
-  if (stalin_sort_lib == NULL || stalin_sort == NULL) {
-    std::cerr << kWarningFormat
-              << "Библиотека StalinSort не найдена. Используем HeapSort\n"
-              << kReset;
     for (size_t i = 0; i <= length / 2; ++i) {
       SiftDown(numbers, length, length / 2 - i);
     }
@@ -91,10 +80,6 @@ void LR6::Solution::SortNumberArray(char** numbers, size_t &length) {
       SiftDown(numbers, length - 1, 0);
       --length;
     } while (length != 0);
-  } else {
-    length = stalin_sort(numbers, length, *this);
-    dlclose(stalin_sort_lib);
-  }
 }
 
 void LR6::Solution::SiftDown(char** numbers, size_t length,

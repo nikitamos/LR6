@@ -8,7 +8,7 @@ class Solution {
   void SolveProblem2();
   void SolveProblem3();
   void PrintDescription();
-  char* ReadLine(char* reuse = nullptr) const;
+  char* ReadLine(char* reuse = nullptr);
   int GetTerminalWidth();
   void SortNumberArray(char** numbers, size_t &length);
   [[deprecated]]
@@ -17,7 +17,7 @@ class Solution {
   bool GreaterOrEqual(char* first, char* second) const;
 
  private:
-  virtual int GetChar() const;
+  virtual int GetChar();
   enum Answer { kVowel, kConsonant, kNone };
   void SiftDown(char** numbers, size_t length, size_t index) const;
   Answer GetLetterType(int);
