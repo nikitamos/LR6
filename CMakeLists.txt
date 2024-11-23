@@ -2,44 +2,58 @@ cmake_minimum_required(VERSION 3.30)
 project(LR6 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED On)
 
 option(ENABLE_COLOR "Enable colored output" On)
 option(ENABLE_TSAN "Build with thread sanitizer" Off)
 option(ENABLE_ASAN "Build with address sanitizer" Off)
+option(BUILD_TESTS "Build tests" Off)
+
+set(VOWEL_TABLE ${CMAKE_BINARY_DIR}/genrated/Task2_VowelTable.inc)
+set(CONSONANT_TABLE ${CMAKE_BINARY_DIR}/genrated/Task2_ConsonantTable.inc)
+set(TABLE_GENERATOR ${CMAKE_SOURCE_DIR}/Task_2/generate_table.py)
+add_custom_target(
+  tables
+  BYPRODUCTS ${VOWELTABLE_PATH} ${CONSONANT_TABLE}
+  DEPENDS ${TABLE_GENERATOR}
+  COMMAND python3 ${TABLE_GENERATOR} ${VOWEL_TABLE} ${CONSONANT_TABLE}
+)
+
+add_library(lr6 STATIC
+  Task_1/solution.cc
+  Task_2/solution.cc 
+  Task_3/solution.cpp
+  common.cc
+)
+add_dependencies(lr6 tables)
+target_include_directories(lr6 PUBLIC include ${CMAKE_BINARY_DIR}/genrated)
+add_executable(lab6 main.cc)
+target_link_libraries(lab6 lr6)
 
 if (${ENABLE_COLOR})
-  add_compile_definitions(ENABLE_COLOR)
+  set_target_properties(lr6 lab6 PROPERTIES COMPILE_DEFINITIONS ENABLE_COLOR)
 endif()
 
+# To use Thread Sanitizer everything should be built with it
 if (${ENABLE_TSAN}) 
   add_compile_options(-fsanitize=thread)
   add_link_options(-fsanitize=thread)
 endif()
 
+
 if (${ENABLE_ASAN}) 
-  add_compile_options(-fsanitize=address)
-  add_link_options(-fsanitize=address)
+  set_target_properties(lr6 lab6 PROPERTIES LCOMPILE_OPTIONS -fsanitize=address)
+  set_target_properties(lr6 lab6 PROPERTIES LINK_OPTIONS -fsanitize=address)
 endif()
 
-set(VOWEL_TABLE ${CMAKE_BINARY_DIR}/genrated/Task2_VowelTable.inc)
-set(CONSONANT_TABLE ${CMAKE_BINARY_DIR}/genrated/Task2_ConsonantTable.inc)
-set(TABLE_GENERATOR ${CMAKE_SOURCE_DIR}/Task_2/generate_table.py)
-add_custom_command(
-  OUTPUT ${VOWELTABLE_PATH}
-  OUTPUT ${CONSONANT_TABLE}
-  COMMAND python3 ${TABLE_GENERATOR} ${VOWEL_TABLE} ${CONSONANT_TABLE}
-  DEPENDS ${TABLE_GENERATOR}
-)
+if (${BUILD_TESTS})
+  enable_testing()
+  add_subdirectory(fuzztest)
+  fuzztest_setup_fuzzing_flags()
+  add_executable(tests tests/all.cpp)
+  link_fuzztest(tests)
+  gtest_discover_tests(tests)
 
-add_library(lr6 STATIC
-  Task_1/solution.cc
-  Task_2/solution.cc ${VOWEL_TABLE} ${CONSONANT_TABLE}
-  Task_3/solution.cpp
-  common.cc
-)
-target_include_directories(lr6 PUBLIC include ${CMAKE_BINARY_DIR}/genrated)
-add_executable(lab6 main.cc)
-target_link_libraries(lab6 lr6)
+  target_link_libraries(tests PRIVATE GTest::gtest_main GTest::gmock lr6)
 
-add_library(StalinSort SHARED Task_1/StalinSort.cc)
-target_link_libraries(StalinSort lr6)
+endif()
