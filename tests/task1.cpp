@@ -5,7 +5,6 @@
 
 #include <format>
 #include <string>
-#include <type_traits>
 #include <vector>
 
 using LR6::Solution;
