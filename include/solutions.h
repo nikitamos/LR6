@@ -4,6 +4,10 @@
 namespace LR6 {
 class Solution {
  public:
+  struct LetterCount {
+    size_t consonants = 0;
+    size_t vowels = 0;
+  };
   char* ReadLine(char* reuse = nullptr);
   void PrintDescription();
   int GetTerminalWidth();
@@ -19,6 +23,7 @@ class Solution {
   void SortNumberArray(char const** numbers, size_t length);
 
   void SolveProblem2();
+  LetterCount CountLetters(const char* str, int length);
 
   void SolveProblem3();
 
@@ -34,9 +39,7 @@ class Solution {
 
  private:
   virtual int GetChar();
-  enum Answer { kVowel, kConsonant, kNone };
   void SiftDown(const char** numbers, size_t length, size_t index) const;
-  Answer GetLetterType(int);
   bool IsStringSymmetrical(char* str)const;
   size_t buf_size_ = 80;
   static const char* author;

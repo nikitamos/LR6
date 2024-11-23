@@ -26,3 +26,5 @@ CheckOptions:
     value:           lower_case
   - key:             readability-identifier-naming.PrivateMemberCase
     value:           lower_case
+  - key:             misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value:           true

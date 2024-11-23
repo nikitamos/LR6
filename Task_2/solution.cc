@@ -8,23 +8,9 @@ void LR6::Solution::SolveProblem2() {
   PrettyInput();
   char* buf = ReadLine();
   int length = std::strlen(buf);
-  int consonants = 0;
-  int vowels = 0;
 
-  for (int i = 0; i < length;) {
-    int cp = GetCodepoint(buf, i);
-    switch (GetLetterType(cp)) {
-      case Answer::kVowel:
-        ++vowels;
-        break;
-      case Answer::kConsonant:
-        ++consonants;
-        break;
-      case Answer::kNone:
-        break;
-    }
-  }
-  std::cout << "гласных: " << vowels << ", согласных: " << consonants << '\n';
+  auto count = CountLetters(buf, length);
+  std::cout << "гласных: " << count.vowels << ", согласных: " << count.consonants << '\n';
   delete[] buf;
 }
 
@@ -51,13 +37,17 @@ int LR6::Solution::GetCodepoint(const char* chr, int& index) const {
   return code;
 }
 
-LR6::Solution::Answer LR6::Solution::GetLetterType(int codepoint) {
-  switch (codepoint) {
-#include <Task2_VowelTable.inc>
-    return Answer::kVowel;
-#include <Task2_ConsonantTable.inc>
-    return Answer::kConsonant;
-    default:
-      return Answer::kNone;
+LR6::Solution::LetterCount LR6::Solution::CountLetters(const char* str, int length) {
+  LetterCount res {.consonants = 0, .vowels = 0};
+  for (int i=0; i<length;) {
+    int codepoint = GetCodepoint(str, i);
+    switch (codepoint) {
+  #include <Task2_VowelTable.inc>
+      ++res.vowels;
+      break;
+  #include <Task2_ConsonantTable.inc>
+      ++res.consonants;
+    }
   }
+  return res;
 }
