@@ -4,25 +4,41 @@
 namespace LR6 {
 class Solution {
  public:
-  void SolveProblem1();
-  void SolveProblem2();
-  void SolveProblem3();
-  void PrintDescription();
   char* ReadLine(char* reuse = nullptr);
+  void PrintDescription();
   int GetTerminalWidth();
-  void SortNumberArray(char** numbers, size_t &length);
+  
+  void SolveProblem1();
+  /**
+    * Compares the strings lexicographically.
+    */
+  bool GreaterOrEqual(const char* first, const char* second) const;
+  /**
+    * Sorts the array of strings in non-decreasing order
+    */
+  void SortNumberArray(char const** numbers, size_t length);
+
+  void SolveProblem2();
+
+  void SolveProblem3();
+
+  
   [[deprecated]]
   void SetBufferSize(size_t new_size);
+  /**
+    * Returns the Unicode Codepoint of the character at position 
+    * `chr[index]` and advances `index` by number of bytes in the
+    * string that represent the codepoint
+    */
   int GetCodepoint(const char* chr, int& index) const;
-  bool GreaterOrEqual(char* first, char* second) const;
 
  private:
   virtual int GetChar();
   enum Answer { kVowel, kConsonant, kNone };
-  void SiftDown(char** numbers, size_t length, size_t index) const;
+  void SiftDown(const char** numbers, size_t length, size_t index) const;
   Answer GetLetterType(int);
   bool IsStringSymmetrical(char* str)const;
-  size_t buf_size_ = 81;
+  size_t buf_size_ = 80;
   static const char* author;
 };
 

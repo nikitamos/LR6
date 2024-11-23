@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.25)
 project(LR6 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED On)
 option(ENABLE_COLOR "Enable colored output" On)
 option(ENABLE_TSAN "Build with thread sanitizer" Off)
 option(ENABLE_ASAN "Build with address sanitizer" Off)
-option(BUILD_TESTS "Build tests" Off)
+option(LR6_BUILD_TESTS "Build tests" Off)
 
 set(VOWEL_TABLE ${CMAKE_BINARY_DIR}/genrated/Task2_VowelTable.inc)
 set(CONSONANT_TABLE ${CMAKE_BINARY_DIR}/genrated/Task2_ConsonantTable.inc)
@@ -46,11 +46,11 @@ if (${ENABLE_ASAN})
   set_target_properties(lr6 lab6 PROPERTIES LINK_OPTIONS -fsanitize=address)
 endif()
 
-if (${BUILD_TESTS})
+if (${LR6_BUILD_TESTS})
   enable_testing()
   add_subdirectory(fuzztest)
   fuzztest_setup_fuzzing_flags()
-  add_executable(tests tests/all.cpp)
+  add_executable(tests tests/fake-input.cpp tests/task1.cpp)
   link_fuzztest(tests)
   gtest_discover_tests(tests)
 

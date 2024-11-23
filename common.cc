@@ -1,4 +1,3 @@
-#include <asm-generic/ioctls.h>
 #include <solutions.h>
 #include <sys/ioctl.h>
 

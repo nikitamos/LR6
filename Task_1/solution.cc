@@ -36,7 +36,6 @@ void LR6::Solution::SolveProblem1() {
       return;
     }
   }
-  std::cout << "В строке чисел: " << kBold << number_count << '\n';
 
   char** numbers = new char*[number_count](nullptr);
   for (int n = 0, j = 0; j < length && n < number_count; ++j) {
@@ -52,15 +51,10 @@ void LR6::Solution::SolveProblem1() {
     }
   }
 
-  std::cout << kReset << "Считанные числа:\n";
-  for (size_t i = 0; i < number_count; ++i) {
-    std::cout << numbers[i] << " - ";
-  }
-  std::cout << '\n';
-  SortNumberArray(numbers, number_count);
+  SortNumberArray(const_cast<const char**>(numbers), number_count);
   std::cout << kGreen << "Отсортированные числа: " << kGreen + kBold;
   for (size_t i = 0; i < number_count; ++i) {
-    std::cout << numbers[i] << " - ";
+    std::cout << numbers[i] << ", ";
   }
   std::cout << kReset << '\n';
 
@@ -70,7 +64,7 @@ void LR6::Solution::SolveProblem1() {
   numbers = nullptr;
 }
 
-void LR6::Solution::SortNumberArray(char** numbers, size_t &length) {
+void LR6::Solution::SortNumberArray(const char** numbers, size_t length) {
     for (size_t i = 0; i <= length / 2; ++i) {
       SiftDown(numbers, length, length / 2 - i);
     }
@@ -82,7 +76,7 @@ void LR6::Solution::SortNumberArray(char** numbers, size_t &length) {
     } while (length != 0);
 }
 
-void LR6::Solution::SiftDown(char** numbers, size_t length,
+void LR6::Solution::SiftDown(const char** numbers, size_t length,
                              size_t index) const {
   if (index * 2 + 1 >= length) {
     return;
@@ -99,7 +93,7 @@ void LR6::Solution::SiftDown(char** numbers, size_t length,
   SiftDown(numbers, length, target);
 }
 
-bool LR6::Solution::GreaterOrEqual(char* first, char* second) const {
+bool LR6::Solution::GreaterOrEqual(const char* first, const char* second) const {
   int len1 = strlen(first);
   int len2 = strlen(second);
   if (len1 != len2) {
