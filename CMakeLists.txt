@@ -50,7 +50,7 @@ if (${LR6_BUILD_TESTS})
   enable_testing()
   add_subdirectory(fuzztest)
   fuzztest_setup_fuzzing_flags()
-  add_executable(tests tests/fake-input.cpp tests/task1.cpp)
+  add_executable(tests tests/fake-input.cpp tests/task1.cpp tests/task2.cpp)
   link_fuzztest(tests)
   gtest_discover_tests(tests)
 

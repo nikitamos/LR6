@@ -7,6 +7,10 @@ class Solution {
   struct LetterCount {
     size_t consonants = 0;
     size_t vowels = 0;
+    inline bool operator == (const LR6::Solution::LetterCount& rhs) const {
+                    return consonants == rhs.consonants
+                        && vowels == rhs.vowels;
+                  }
   };
   char* ReadLine(char* reuse = nullptr);
   void PrintDescription();
