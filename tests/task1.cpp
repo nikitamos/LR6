@@ -11,7 +11,6 @@ using LR6::Solution;
 
 namespace LR6 {
 namespace testing {
-namespace task1 {
 static constinit Solution s;
 
 void NormalStringNumbers(const std::string& a, const std::string& b) {
@@ -75,6 +74,5 @@ void Arbitrary(const std::vector<std::string>& inp) {
 FUZZ_TEST(SortArray, Arbitrary)
     .WithDomains(fuzztest::VectorOf(
         fuzztest::internal_no_adl::InRegexp("\\[1-9]\\d{0,12}")));
-}  // namespace task1
 }  // namespace testing
 }  // namespace LR6
