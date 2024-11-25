@@ -16,14 +16,14 @@ TEST(GetCodepoint, Ascii) {
   ASSERT_EQ(kChars[i-1], '\0');
 }
 
-TEST(GetCodepoint, 1Ascii) {
+TEST(GetCodepoint, AsciiChar) {
   Solution s;
   const char kX = 'x';
   int i = 0;
   ASSERT_EQ(s.GetCodepoint(&kX, i), kX);
 }
 
-TEST(GetCodepoint, 1Cyrillic) {
+TEST(GetCodepoint, CyrillicChar) {
   Solution s;
   const char *str = "я";
   int i = 0;
@@ -44,10 +44,17 @@ TEST(GetCodepoint, CyrillicString) {
   }
 }
 
+TEST(GetCodepoint, LongCodepoint) {
+  Solution s;
+  const char* str = "𝄞";
+  int index = 0;
+  ASSERT_EQ(s.GetCodepoint(str, index), 0x01D11E);
+}
+
 
 TEST(CountLetters, AllLatin) {
   Solution s;
-  const char* latin = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+  const char latin[] = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
   Solution::LetterCount expected = {.consonants = 40, .vowels=12};
   ASSERT_EQ(s.CountLetters(latin, 52), expected);
 }
@@ -55,8 +62,72 @@ TEST(CountLetters, AllLatin) {
 TEST(CountLetters, AllCyrillic) {
   Solution s;
   const char* cyrillic = "ёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ";
-  Solution::LetterCount expected = {.consonants = 46, .vowels=20};
+  Solution::LetterCount expected = {.consonants = 42, .vowels=20};
   ASSERT_EQ(s.CountLetters(cyrillic, strlen(cyrillic)), expected);
+}
+
+TEST(CountLetters, LatinAndCyrillic) {
+  Solution s;
+  const char str[] = "бгуирbsuir";
+  const int kLen = sizeof(str) - 1;
+  Solution::LetterCount expected = {6, 4};
+}
+
+TEST(CountLetters, NoLetters) {
+  Solution s;
+  const char str[] = "274&(* 23) 2 2 }  [42 + 58 = 100]";
+  const int kLen = sizeof(str) - 1;
+  Solution::LetterCount expected = {0, 0};
+  ASSERT_EQ(s.CountLetters(str, kLen), expected);
+}
+
+TEST(CountLetters, All) {
+  Solution s;
+  const char str[] = "ёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ"
+                    "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+  Solution::LetterCount expected {82, 32};
+  const int kLen = sizeof(str)-1;
+  ASSERT_EQ(s.CountLetters(str, kLen), expected);
+}
+
+TEST(CountLetters, EmptyString) {
+  Solution s;
+  const char str[] = "";
+  Solution::LetterCount expected {0, 0};
+  const int kLen = sizeof(str)-1;
+  ASSERT_EQ(s.CountLetters(str, kLen), expected);
+}
+
+TEST(CountLetters, NoLettersNoAscii) {
+  Solution s;
+  const char str[] = "∑∏∜";
+  Solution::LetterCount expected {0, 0};
+  const int kLen = sizeof(str)-1;
+  ASSERT_EQ(s.CountLetters(str, kLen), expected);
+}
+
+TEST(CountLetters, NormalLettersAmongWideUTF8) {
+  Solution s;
+  const char str[] = "⥁Дз⍍ы🔔нь┇";
+  Solution::LetterCount expected {3, 1};
+  const int kLen = sizeof(str)-1;
+  ASSERT_EQ(s.CountLetters(str, kLen), expected); 
+}
+
+TEST(CountLetters, SoftHardSigns) {
+  Solution s;
+  const char str[] = "ьъЬЪ";
+  const int kLen = sizeof(str) - 1;
+  Solution::LetterCount expected {0, 0};
+  ASSERT_EQ(s.CountLetters(str, kLen), expected);
+}
+
+TEST(CountLetters, Substring) {
+  Solution s;
+  const char str[] = "keyboard";
+  const int kLen = 4;
+  Solution::LetterCount expected {2, 2};
+  ASSERT_EQ(s.CountLetters(str, kLen), expected);
 }
 
 }  // namespace testing
