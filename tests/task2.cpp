@@ -1,10 +1,13 @@
 #include <gtest/gtest.h>
+#include <fuzztest/fuzztest.h>
+#include <fuzztest/domain.h>
+#include "fuzztest/fuzztest.h"
 #include "solutions.h"
 
 namespace LR6 {
 namespace testing {
 
-TEST(GetCodepoint, Ascii) {
+TEST(GetCodepoint, AsciiString) {
   Solution s;
   const char kChars[] = "213498dksajfjUJGfbJ"; 
   size_t size = sizeof(kChars);
@@ -49,6 +52,13 @@ TEST(GetCodepoint, LongCodepoint) {
   const char* str = "𝄞";
   int index = 0;
   ASSERT_EQ(s.GetCodepoint(str, index), 0x01D11E);
+}
+
+TEST(GetCodepoint, TwoByteUtf8) {
+  Solution s;
+  const char* str = "\u0700";
+  int index = 0;
+  ASSERT_EQ(s.GetCodepoint(str, index), 0x0700);
 }
 
 

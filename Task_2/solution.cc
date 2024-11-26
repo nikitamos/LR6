@@ -42,10 +42,10 @@ LR6::Solution::LetterCount LR6::Solution::CountLetters(const char* str, int leng
   for (int i=0; i<length;) {
     int codepoint = GetCodepoint(str, i);
     switch (codepoint) {
-  #include <Task2_VowelTable.inc>
+    #include <Task2_VowelTable.inc>
       ++res.vowels;
       break;
-  #include <Task2_ConsonantTable.inc>
+    #include <Task2_ConsonantTable.inc>
       ++res.consonants;
     }
   }
