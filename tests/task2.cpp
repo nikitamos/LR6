@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
 #include <fuzztest/fuzztest.h>
-#include "fuzztest/fuzztest_macros.h"
-#include "fuzztest/internal/domains/overlap_of_impl.h"
 #include "solutions.h"
 
 namespace LR6 {
@@ -28,20 +26,20 @@ TEST(GetCodepoint, AsciiChar) {
 
 TEST(GetCodepoint, CyrillicChar) {
   Solution s;
-  const char *str = "я";
+  const char kStr[] = "я";
   int i = 0;
-  ASSERT_EQ(s.GetCodepoint(str, i), 0x044F);
+  ASSERT_EQ(s.GetCodepoint(kStr, i), 0x044F);
 }
 
 TEST(GetCodepoint, CyrillicString) {
   Solution s;
   const int kLetters = 5;
-  const char *str = "ФКСиС";
+  const char kStr[] = "ФКСиС";
   const int kCorrect[kLetters] = {0x0424, 0x041A, 0x0421, 0x0438, 0x0421};
   int sym = 0;
   for (int i=0; i<kLetters; ++i) {
     int next = sym;
-    ASSERT_EQ(s.GetCodepoint(str, next), kCorrect[i]);
+    ASSERT_EQ(s.GetCodepoint(kStr, next), kCorrect[i]);
     ASSERT_EQ(next-sym, 2);
     sym = next;
   }
@@ -49,36 +47,64 @@ TEST(GetCodepoint, CyrillicString) {
 
 TEST(GetCodepoint, MixedString) {
   Solution s;
-  const char* str = ""
+  const int kLetters = 4;
+  const char kStr[] = "GЫGъ";
+  const int kCorrect[kLetters] = {'G', 0x042B, 'G', 0x044A};
+  int sym = 0;
+  for (int i=0; i<kLetters; ++i) {
+    int next = sym;
+    ASSERT_EQ(s.GetCodepoint(kStr, next), kCorrect[i]);
+    sym = next;
+  }
+}
+
+TEST(GetCodepoint, MixedString2) {
+  Solution s;
+  const int kLetters = 3;
+  const char kStr[] = "Y🎓я";
+  const int kCorrect[kLetters] = {'Y', 0x01F393, 0x044F};
+  int sym = 0;
+  for (int i=0; i<kLetters; ++i) {
+    int next = sym;
+    ASSERT_EQ(s.GetCodepoint(kStr, next), kCorrect[i]);
+    sym = next;
+  }
 }
 
 TEST(GetCodepoint, FourByteUtf8) {
   Solution s;
-  const char str[] = "𝄞";
+  const char kStr[] = "𝄞";
   int index = 0;
-  ASSERT_EQ(s.GetCodepoint(str, index), 0x01D11E);
+  ASSERT_EQ(s.GetCodepoint(kStr, index), 0x01D11E);
 }
 
 TEST(GetCodepoint, TwoByteUtf8) {
   Solution s;
-  const char str[] = "\u0700";
+  const char kStr[] = "\u0700";
   int index = 0;
-  ASSERT_EQ(s.GetCodepoint(str, index), 0x0700);
+  ASSERT_EQ(s.GetCodepoint(kStr, index), 0x0700);
 }
 
 TEST(GetCodepoint, ThreeByteUtf8) {
   Solution s;
-  const char str[] = "ᨡ";
+  const char kStr[] = "ᨡ";
   int index = 0;
-  ASSERT_EQ(s.GetCodepoint(str, index), 0x1A21);
+  ASSERT_EQ(s.GetCodepoint(kStr, index), 0x1A21);
+}
+
+TEST(GetCodepoint, EmptyString) {
+  Solution  s;
+  const char kStr[] = "";
+  int index = 0;
+  ASSERT_EQ(s.GetCodepoint(kStr, index), '\0');
 }
 
 
 TEST(CountLetters, AllLatin) {
   Solution s;
-  const char latin[] = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+  const char kLatin[] = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
   Solution::LetterCount expected = {.consonants = 40, .vowels=12};
-  ASSERT_EQ(s.CountLetters(latin, 52), expected);
+  ASSERT_EQ(s.CountLetters(kLatin, 52), expected);
 }
 
 TEST(CountLetters, AllCyrillic) {
@@ -90,66 +116,66 @@ TEST(CountLetters, AllCyrillic) {
 
 TEST(CountLetters, LatinAndCyrillic) {
   Solution s;
-  const char str[] = "бгуирbsuir";
-  const int kLen = sizeof(str) - 1;
+  const char kStr[] = "бгуирbsuir";
+  const int kLen = sizeof(kStr) - 1;
   Solution::LetterCount expected = {6, 4};
 }
 
 TEST(CountLetters, NoLetters) {
   Solution s;
-  const char str[] = "274&(* 23) 2 2 }  [42 + 58 = 100]";
-  const int kLen = sizeof(str) - 1;
+  const char kStr[] = "274&(* 23) 2 2 }  [42 + 58 = 100]";
+  const int kLen = sizeof(kStr) - 1;
   Solution::LetterCount expected = {0, 0};
-  ASSERT_EQ(s.CountLetters(str, kLen), expected);
+  ASSERT_EQ(s.CountLetters(kStr, kLen), expected);
 }
 
 TEST(CountLetters, All) {
   Solution s;
-  const char str[] = "ёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ"
+  const char kStr[] = "ёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ"
                     "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
   Solution::LetterCount expected {82, 32};
-  const int kLen = sizeof(str)-1;
-  ASSERT_EQ(s.CountLetters(str, kLen), expected);
+  const int kLen = sizeof(kStr)-1;
+  ASSERT_EQ(s.CountLetters(kStr, kLen), expected);
 }
 
 TEST(CountLetters, EmptyString) {
   Solution s;
-  const char str[] = "";
+  const char kStr[] = "";
   Solution::LetterCount expected {0, 0};
-  const int kLen = sizeof(str)-1;
-  ASSERT_EQ(s.CountLetters(str, kLen), expected);
+  const int kLen = sizeof(kStr)-1;
+  ASSERT_EQ(s.CountLetters(kStr, kLen), expected);
 }
 
 TEST(CountLetters, NoLettersNoAscii) {
   Solution s;
-  const char str[] = "∑∏∜";
+  const char kStr[] = "∑∏∜";
   Solution::LetterCount expected {0, 0};
-  const int kLen = sizeof(str)-1;
-  ASSERT_EQ(s.CountLetters(str, kLen), expected);
+  const int kLen = sizeof(kStr)-1;
+  ASSERT_EQ(s.CountLetters(kStr, kLen), expected);
 }
 
 TEST(CountLetters, NormalLettersAmongWideUTF8) {
   Solution s;
-  const char str[] = "⥁Дз⍍ы🔔нь┇";
+  const char kStr[] = "⥁Дз⍍ы🔔нь┇";
   Solution::LetterCount expected {3, 1};
-  const int kLen = sizeof(str)-1;
-  ASSERT_EQ(s.CountLetters(str, kLen), expected); 
+  const int kLen = sizeof(kStr)-1;
+  ASSERT_EQ(s.CountLetters(kStr, kLen), expected); 
 }
 
 TEST(CountLetters, SoftHardSigns) {
   Solution s;
-  const char str[] = "ьъЬЪ";
-  const int kLen = sizeof(str) - 1;
+  const char kStr[] = "ьъЬЪ";
+  const int kLen = sizeof(kStr) - 1;
   Solution::LetterCount expected {0, 0};
-  ASSERT_EQ(s.CountLetters(str, kLen), expected);
+  ASSERT_EQ(s.CountLetters(kStr, kLen), expected);
 }
 
-TEST(CountLetters, Substring) {
+TEST(CountLetters, SubString) {
   Solution s;
-  const char str[] = "keyboard";
+  const char kStr[] = "keyboard";
   const int kLen = 4;
   Solution::LetterCount expected {2, 2};
-  ASSERT_EQ(s.CountLetters(str, kLen), expected);
+  ASSERT_EQ(s.CountLetters(kStr, kLen), expected);
 }
 
 }  // namespace testing
