@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <fuzztest/fuzztest.h>
-#include <fuzztest/domain.h>
-#include "fuzztest/fuzztest.h"
+#include "fuzztest/fuzztest_macros.h"
+#include "fuzztest/internal/domains/overlap_of_impl.h"
 #include "solutions.h"
 
 namespace LR6 {
@@ -47,18 +47,30 @@ TEST(GetCodepoint, CyrillicString) {
   }
 }
 
-TEST(GetCodepoint, LongCodepoint) {
+TEST(GetCodepoint, MixedString) {
   Solution s;
-  const char* str = "𝄞";
+  const char* str = ""
+}
+
+TEST(GetCodepoint, FourByteUtf8) {
+  Solution s;
+  const char str[] = "𝄞";
   int index = 0;
   ASSERT_EQ(s.GetCodepoint(str, index), 0x01D11E);
 }
 
 TEST(GetCodepoint, TwoByteUtf8) {
   Solution s;
-  const char* str = "\u0700";
+  const char str[] = "\u0700";
   int index = 0;
   ASSERT_EQ(s.GetCodepoint(str, index), 0x0700);
+}
+
+TEST(GetCodepoint, ThreeByteUtf8) {
+  Solution s;
+  const char str[] = "ᨡ";
+  int index = 0;
+  ASSERT_EQ(s.GetCodepoint(str, index), 0x1A21);
 }
 
 

@@ -52,6 +52,7 @@ if (${LR6_BUILD_TESTS})
   fuzztest_setup_fuzzing_flags()
   add_executable(tests tests/fake-input.cpp tests/task1.cpp tests/task2.cpp)
   link_fuzztest(tests)
+  include(GoogleTest)
   gtest_discover_tests(tests)
 
   target_link_libraries(tests PRIVATE GTest::gtest_main GTest::gmock lr6)
