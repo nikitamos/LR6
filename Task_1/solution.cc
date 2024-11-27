@@ -65,15 +65,15 @@ void LR6::Solution::SolveProblem1() {
 }
 
 void LR6::Solution::SortNumberArray(const char** numbers, size_t length) {
-    for (size_t i = 0; i <= length / 2; ++i) {
-      SiftDown(numbers, length, length / 2 - i);
-    }
+  for (size_t i = 0; i <= length / 2; ++i) {
+    SiftDown(numbers, length, length / 2 - i);
+  }
 
-    do {
-      std::swap(numbers[0], numbers[length - 1]);
-      SiftDown(numbers, length - 1, 0);
-      --length;
-    } while (length != 0);
+  do {
+    std::swap(numbers[0], numbers[length - 1]);
+    SiftDown(numbers, length - 1, 0);
+    --length;
+  } while (length != 0);
 }
 
 void LR6::Solution::SiftDown(const char** numbers, size_t length,
@@ -93,7 +93,8 @@ void LR6::Solution::SiftDown(const char** numbers, size_t length,
   SiftDown(numbers, length, target);
 }
 
-bool LR6::Solution::GreaterOrEqual(const char* first, const char* second) const {
+bool LR6::Solution::GreaterOrEqual(const char* first,
+                                   const char* second) const {
   int len1 = strlen(first);
   int len2 = strlen(second);
   if (len1 != len2) {

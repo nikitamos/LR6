@@ -7,23 +7,22 @@ class Solution {
   struct LetterCount {
     size_t consonants = 0;
     size_t vowels = 0;
-    inline bool operator == (const LR6::Solution::LetterCount& rhs) const {
-                    return consonants == rhs.consonants
-                        && vowels == rhs.vowels;
-                  }
+    inline bool operator==(const LR6::Solution::LetterCount& rhs) const {
+      return consonants == rhs.consonants && vowels == rhs.vowels;
+    }
   };
   char* ReadLine(char* reuse = nullptr);
   void PrintDescription();
   int GetTerminalWidth();
-  
+
   void SolveProblem1();
   /**
-    * Compares the strings lexicographically.
-    */
+   * Compares the strings lexicographically.
+   */
   bool GreaterOrEqual(const char* first, const char* second) const;
   /**
-    * Sorts the array of strings in non-decreasing order
-    */
+   * Sorts the array of strings in non-decreasing order
+   */
   void SortNumberArray(char const** numbers, size_t length);
 
   void SolveProblem2();
@@ -31,20 +30,19 @@ class Solution {
 
   void SolveProblem3();
 
-  
   [[deprecated]]
   void SetBufferSize(size_t new_size);
   /**
-    * Returns the Unicode Codepoint of the character at position 
-    * `chr[index]` and advances `index` by number of bytes in the
-    * string that represent the codepoint
-    */
+   * Returns the Unicode Codepoint of the character at position
+   * `chr[index]` and advances `index` by number of bytes in the
+   * string that represent the codepoint
+   */
   int GetCodepoint(const char* chr, int& index) const;
 
  private:
   virtual int GetChar();
   void SiftDown(const char** numbers, size_t length, size_t index) const;
-  bool IsStringSymmetrical(char* str)const;
+  bool IsStringSymmetrical(char* str) const;
   size_t buf_size_ = 80;
   static const char* author;
 };

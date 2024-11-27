@@ -57,11 +57,12 @@ TEST(SortArray, Descending) {
   ASSERT_THAT(array, NonDecreasingArray(kSize));
 }
 // TODO(): imnplement the test
-TEST(SortArray, Empty) {
-}
+TEST(SortArray, Empty) {}
 
 void Arbitrary(const std::vector<std::string>& inp) {
-  if (inp.size() == 0) { return; }
+  if (inp.size() == 0) {
+    return;
+  }
   const char** array = new const char*[inp.size()];
   for (size_t i = 0; i < inp.size(); ++i) {
     array[i] = inp[i].c_str();
