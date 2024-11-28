@@ -29,6 +29,7 @@ class Solution {
   LetterCount CountLetters(const char* str, int length);
 
   void SolveProblem3();
+  unsigned long ParseStrToUL(const char* str);
 
   [[deprecated]]
   void SetBufferSize(size_t new_size);
