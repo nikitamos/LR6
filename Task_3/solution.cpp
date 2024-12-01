@@ -78,18 +78,11 @@ bool LR6::Solution::IsStringSymmetrical(const char* str) const {
   for (; str[length] != '\0'; ++length) {
   }
   for (int i = 0; i < length / 2;) {
-    if ((str[i] & 0x80) == 0 && (str[length - i - 1] & 0x80) == 0) {  // ASCII
-      if (str[i] != str[length - i - 1]) {
-        return false;
-      }
-      ++i;
-    } else {
-      int a = GetCodepoint(str, i);
-      int j = length - i;
-      int b = GetCodepoint(str, j);
-      if (a != b) {
-        return false;
-      }
+    int a = GetCodepoint(str, i);
+    int j = length - i;
+    int b = GetCodepoint(str, j);
+    if (a != b) {
+      return false;
     }
   }
   return true;
