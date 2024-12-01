@@ -66,7 +66,7 @@ void LR6::Solution::SolveProblem3() {
   buf = nullptr;
 }
 
-bool LR6::Solution::IsStringSymmetrical(char* str) const {
+bool LR6::Solution::IsStringSymmetrical(const char* str) const {
   int length = 0;
   for (; str[length] != '\0'; ++length) {}
   for (int i = 0; i < length / 2;) {

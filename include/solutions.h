@@ -32,6 +32,7 @@ class Solution {
 
   void SolveProblem3();
   u64 ParseStrToUL(const char* str);
+  bool IsStringSymmetrical(const char* str) const;
 
   [[deprecated]]
   void SetBufferSize(size_t new_size);
@@ -45,7 +46,6 @@ class Solution {
  private:
   virtual int GetChar();
   void SiftDown(const char** numbers, size_t length, size_t index) const;
-  bool IsStringSymmetrical(char* str) const;
   size_t buf_size_ = 80;
   static const char* author;
 };
