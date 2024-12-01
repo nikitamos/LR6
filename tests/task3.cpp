@@ -1,28 +1,47 @@
 #include <gtest/gtest.h>
+#include <solutions.h>
+#include <string>
 
 #include "fuzztest/fuzztest.h"
 
 namespace LR6 {
 namespace testing {
 using ::fuzztest::internal_no_adl::InRegexp;
+using ::fuzztest::Arbitrary;
+using ::fuzztest::StringOf;
+using ::fuzztest::PrintableAsciiString;
 
-auto PushChars(std::string s, size_t count, std::string chr) {
-  using namespace fuzztest;
-  return
+void ParsesCorrectStrings(u64 res) {
+  Solution s;
+  std::string str = std::to_string(res);
+  ASSERT_EQ(s.ParseStrToUL(str.c_str()), res);
+}
+void ThrowsOnIncorrectStrings(std::string str) {
+
+  Solution s;
+  ASSERT_ANY_THROW(s.ParseStrToUL(str.c_str()));
+}
+auto ThrowsOnTooLongInts = &ThrowsOnIncorrectStrings;
+
+FUZZ_TEST(ParseStrToUL, ParsesCorrectStrings).WithDomains(Arbitrary<u64>());
+FUZZ_TEST(ParseStrToUL, ThrowsOnIncorrectStrings)
+  .WithDomains(InRegexp("\\d{0,17}[ -/:-~][ -~]*"));
+
+FUZZ_TEST(ParseStrToUL, ThrowsOnTooLongInts)
+  .WithDomains(InRegexp("\\d{19,64}"));
+
+TEST(ParseStringToUL, ParsesEmptyString) {
+  Solution s;
+  const char* str = "";
+  ASSERT_EQ(s.ParseStrToUL(str), 0);
 }
 
-auto SymmetricalString(auto max_size) {
-  auto size = ::fuzztest::InRange(0, max_size / 2);
-  return ::fuzztest::FlatMap(
-      [](size_t x) {
-        return ::fuzztest::VectorOf(InRegexp("\\p{Cyrillic}")).WithSize(x);
-      },
-      size);
+auto EvenSymmetricalString(std::string s)  {
+  
 }
-
-void PrintSth(const std::string &s) { std::cout << s << '\n'; }
-
-FUZZ_TEST(UNTEST, PrintSth).WithDomains(SymmetricalString(40));
+auto OddSymmetricalString(std::string s) {
+  
+}
 
 }  // namespace testing
 }  // namespace LR6

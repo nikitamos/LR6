@@ -1,4 +1,3 @@
-#include <limits>
 #include <solutions.h>
 
 #include <cstdio>
@@ -88,13 +87,13 @@ bool LR6::Solution::IsStringSymmetrical(char* str) const {
   return true;
 }
 
-unsigned long LR6::Solution::ParseStrToUL(const char* str) {
-  unsigned long result = 0;
+LR6::u64 LR6::Solution::ParseStrToUL(const char* str) {
+  u64 result = 0;
   for (const char* c = str; *c != '\0'; ++c) {
     auto oldres = result;
     if ('0' <= *c && *c <= '9') {
       result *= 10;
-      result += *c - '9';
+      result += *c - '0';
       if (oldres > result) {
         throw ULParseError(c - str);
       }
