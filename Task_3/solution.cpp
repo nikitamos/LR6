@@ -1,3 +1,4 @@
+#include <limits>
 #include <solutions.h>
 
 #include <cstdio>
@@ -27,6 +28,11 @@ void LR6::Solution::SolveProblem3() {
   try {
     n = ParseStrToUL(buf);
   } catch (ULParseError& e) {
+    if (e.GetPosition() == strlen(buf)) {
+      std::cerr << kErrorFormat << "Некорректный ввод\n";
+      delete[] buf;
+      return;
+    }
     std::cerr << kErrorFormat << "Ошибка разбора на позиции "
               << e.GetPosition() + 1 << ":\n"
               << kDefault << buf << '\n';
@@ -38,6 +44,7 @@ void LR6::Solution::SolveProblem3() {
     delete[] buf;
     return;
   }
+  std::cout << n << '\n';
   if (n == 0) {
     std::cout << kReset << "Для пустого массива справедливо всё что угодно\n";
     delete[] buf;
@@ -89,13 +96,12 @@ bool LR6::Solution::IsStringSymmetrical(const char* str) const {
 }
 
 LR6::u64 LR6::Solution::ParseStrToUL(const char* str) {
-  u64 result = 0;
+  __int128_t result = 0;
   for (const char* c = str; *c != '\0'; ++c) {
-    auto oldres = result;
     if ('0' <= *c && *c <= '9') {
       result *= 10;
       result += *c - '0';
-      if (oldres > result) {
+      if (result > static_cast<__uint128_t>(std::numeric_limits<u64>::max())) {
         throw ULParseError(c - str);
       }
     } else {
