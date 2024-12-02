@@ -19,12 +19,14 @@ int main() {
 
   std::cout << LR6::kCyan + LR6::kBold << "Лабораторная работа №6. "
             << LR6::EscapeSequence(LR6::kBold) << "Вариант 9" << '\n';
-  std::cout << LR6::kReset << "Выполнил" << LR6::kBold << "Москалёв Никита\n";
-  solution.PrintDescription();
-  LR6::PrettyInput();
-  char* problem_no_str = solution.ReadLine();
+  std::cout << LR6::kReset << "Выполнил " << LR6::kBold << "Москалёв Никита\n\n";
+  char* problem_no_str = new char[81];
+  bool do_run = true;
 
   do {
+    solution.PrintDescription();
+    LR6::PrettyInput();
+    solution.ReadLine(problem_no_str);
     int problem_num = 0;
     try {
       problem_num = std::stoi(problem_no_str);
@@ -33,6 +35,9 @@ int main() {
     }
 
     switch (problem_num) {
+      case 0:
+        do_run = false;
+        break;
       case 1:
         solution.SolveProblem1();
         break;
@@ -46,11 +51,7 @@ int main() {
         std::cerr << LR6::kErrorFormat
                   << "Неверный ввод или таска не выполнена\n";
     }
-    solution.SetBufferSize(80);
-    std::cout << LR6::kGreen + LR6::kNormal << "Введите номер задачи\n";
-    LR6::PrettyInput();
-    solution.ReadLine(problem_no_str);
-  } while (true);
+  } while (do_run);
 
   delete[] problem_no_str;
   return 0;

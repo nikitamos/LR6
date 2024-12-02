@@ -64,14 +64,14 @@ char* LR6::Solution::ReadLine(char* reuse) {
 
 void LR6::Solution::PrintDescription() {
   std::cout << kReset << kYellow + kBold << "Задача 1: " << kReset << kCyan
-            << "считывает строку чисел, разделенных пробелами и выводит их в "
+            << "считывает строку чисел, разделенных пробелами, и выводит их в "
                "порядке возрастания\n"
             << kYellow + kBold << "Задача 2: " << kReset << kCyan
             << "Определяет, каких букв больше во введенной строке: гласных или "
                "согласных\n"
             << kYellow + kBold << "Задача 3: " << kReset << kCyan
             << "Находит симметричные строки во введенном массиве строк\n"
-            << kReset;
+            << kGreen + kNormal << "Введите номер задачи или 0, чтобы выйти\n" << kReset;
 }
 
 int LR6::Solution::GetTerminalWidth() {
@@ -82,7 +82,6 @@ int LR6::Solution::GetTerminalWidth() {
   return window_size.ws_col;
 }
 
-void LR6::Solution::SetBufferSize(size_t new_size) { buf_size_ = new_size; }
 int LR6::Solution::GetChar() {
   return getchar();
 }

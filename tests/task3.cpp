@@ -13,7 +13,7 @@ using ::fuzztest::Arbitrary;
 using ::fuzztest::InRange;
 using ::fuzztest::Map;
 using ::fuzztest::OneOf;
-using ::fuzztest::internal_no_adl::InRegexp;
+using ::fuzztest::InRegexp;
 
 void ParsesCorrectStrings(u64 res) {
   Solution s;

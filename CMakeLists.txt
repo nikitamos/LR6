@@ -19,6 +19,19 @@ add_custom_target(
   COMMAND python3 ${TABLE_GENERATOR} ${VOWEL_TABLE} ${CONSONANT_TABLE}
 )
 
+if (${ENABLE_TSAN} AND ${ENABLE_ASAN})
+  message(FATAL_ERROR "Thread and Address Sanitizer are not compatible")
+endif()
+
+if (${ENABLE_TSAN})
+  if (${ENABLE_TESTING}) 
+    message(FATAL_ERROR "Can not build tests with Thread Sanitizer")
+  endif()
+  message(STATUS "Thread Sanitizer enabled")
+  add_compile_options(-fsanitize=thread)
+  add_link_options(-fsanitize=thread)
+endif()
+
 add_library(lr6 STATIC
   Task_1/solution.cc
   Task_2/solution.cc 
@@ -34,15 +47,9 @@ if (${ENABLE_COLOR})
   set_target_properties(lr6 lab6 PROPERTIES COMPILE_DEFINITIONS ENABLE_COLOR)
 endif()
 
-# To use Thread Sanitizer everything should be built with it
-if (${ENABLE_TSAN}) 
-  add_compile_options(-fsanitize=thread)
-  add_link_options(-fsanitize=thread)
-endif()
-
-
 if (${ENABLE_ASAN}) 
-  set_target_properties(lr6 lab6 PROPERTIES LCOMPILE_OPTIONS -fsanitize=address)
+  message(STATUS "Address Sanitizer enabled")
+  set_target_properties(lr6 lab6 PROPERTIES COMPILE_OPTIONS -fsanitize=address)
   set_target_properties(lr6 lab6 PROPERTIES LINK_OPTIONS -fsanitize=address)
 endif()
 

@@ -10,8 +10,8 @@ void LR6::Solution::SolveProblem2() {
   int length = std::strlen(buf);
 
   auto count = CountLetters(buf, length);
-  std::cout << "гласных: " << count.vowels
-            << ", согласных: " << count.consonants << '\n';
+  std::cout << kReset << "гласных:\t" << kGreen+kBold << count.vowels
+            << kReset << "\nсогласных:\t" << kGreen+kBold << count.consonants << '\n';
   delete[] buf;
 }
 

@@ -5,7 +5,7 @@
 
 void LR6::Solution::SolveProblem1() {
   std::cout << kReset
-            << "Введите строку, состоящую из цифр, разделенных пробелами\n";
+            << "Введите строку, состоящую из чисел, разделенных пробелами\n";
   PrettyInput();
   char* buf = this->ReadLine();
   std::cout << kReset;
@@ -14,12 +14,12 @@ void LR6::Solution::SolveProblem1() {
   int length = std::strlen(buf);
   bool in_number = false;
   for (int i = 0; i < length; ++i) {
-    if (std::isdigit(buf[i])) {
+    if (std::isdigit(buf[i]) != 0) {
       if (!in_number) {
         in_number = true;
         ++number_count;
       }
-    } else if (std::isspace(buf[i])) {
+    } else if (std::isspace(buf[i]) != 0) {
       in_number = false;
     } else {
       std::cerr << kErrorFormat
@@ -54,7 +54,7 @@ void LR6::Solution::SolveProblem1() {
   SortNumberArray(const_cast<const char**>(numbers), number_count);
   std::cout << kGreen << "Отсортированные числа: " << kGreen + kBold;
   for (size_t i = 0; i < number_count; ++i) {
-    std::cout << numbers[i] << ", ";
+    std::cout << numbers[i] << " ";
   }
   std::cout << kReset << '\n';
 

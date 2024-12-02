@@ -20,7 +20,7 @@ class ULParseError : public std::runtime_error {
 }  // namespace LR6
 
 void LR6::Solution::SolveProblem3() {
-  std::cout << kReset << "Размерность массива ";
+  std::cout << kReset << "Размерность массива\n";
   PrettyInput();
   char* buf = ReadLine();
   int n = 0;

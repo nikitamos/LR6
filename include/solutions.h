@@ -34,8 +34,6 @@ class Solution {
   u64 ParseStrToUL(const char* str);
   bool IsStringSymmetrical(const char* str) const;
 
-  [[deprecated]]
-  void SetBufferSize(size_t new_size);
   /**
    * Returns the Unicode Codepoint of the character at position
    * `chr[index]` and advances `index` by number of bytes in the
